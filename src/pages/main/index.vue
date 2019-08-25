@@ -60,39 +60,37 @@
     <section class="recomended q-mb-xl q-py-xl">
       <div class="container">
         <div class="row justify-center items-center">
-          <q-card class="card shadow-transition q-mx-md" square>
-            <img src="/statics/img/cards/card1.jpg" />
+          <q-card class="card shadow-transition q-mx-md" square v-for="item in products" :key="item.id">
+            <img :src="item.img" />
 
-            <q-card-actions class="absolute-top-right">
+            <q-card-actions v-if="item.type" class="absolute-top-right">
               <q-chip
+              v-for="(chip, i) in item.type"
+              :key="i"
                 size="10px"
                 dense
                 class="text-uppercase card_chip card_chip--sale q-px-sm"
-              >Акция</q-chip>
+              > {{ chip }}</q-chip>
             </q-card-actions>
 
             <q-card-section>
-              <div class="text-h6">Сальмоне</div>
+              <div class="text-h6">{{ item.name }}</div>
             </q-card-section>
 
             <q-card-section>
-              <p>Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.</p>
+              <p>{{ item.description }}</p>
             </q-card-section>
 
             <q-separator></q-separator>
 
-            <q-card-section>
+            <q-card-section >
               <q-btn-toggle
                 unelevated
                 v-model="pizzaDiametr"
                 toggle-color="grey-5"
                 no-caps
                 class="text-lowercase"
-                :options="[
-                  {label: '25 см.', value: '25'},
-                  {label: '30 см.', value: '30'},
-                  {label: '40 см.', value: '40'}
-                ]"
+                :options="item.options"
               />
             </q-card-section>
 
@@ -106,7 +104,7 @@
             </q-card-section>
           </q-card>
 
-          <q-card class="card shadow-transition q-mx-md" square>
+          <!-- <q-card class="card shadow-transition q-mx-md" square>
             <img src="/statics/img/cards/card2.jpg" />
 
             <q-card-actions class="absolute-top-right">
@@ -234,7 +232,7 @@
                 </span>
               </div>
             </q-card-section>
-          </q-card>
+          </q-card> -->
         </div>
       </div>
     </section>
@@ -255,12 +253,37 @@ export default {
       pizzaDiametr: "25",
       products: [
         {
+          id: 1,
+          type: ["Акция"],
           img: "/statics/img/cards/card1.jpg",
+          category: "pizza",
           name: "Сальмоне",
-          description:
-            "Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.",
-          price: [{ price25: "375", price30: "400", price40: "700" }]
-        }
+          description: "Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.",
+          options: [
+            { label: "25 см.", value: "25", price: "375" },
+            { label: "30 см.", value: "30", price: "400" },
+            { label: "40 см.", value: "40", price: "700" }
+          ]
+          // price: [
+          //   { price25: "375", price30: "400", price40: "700" }
+          // ]
+        },
+        {
+          id: 2,
+          type: ['остро', 'хит'],
+          img: "/statics/img/cards/card1.jpg",
+          category: "pizza",
+          name: "Пицца Барбекю",
+          description: "Куриное филе, бекон с/к, колбаса п/к, болгарский перец, шампиньоны, лук красный маринованный, томатный соус, моцарелла, укроп и петрушка.",
+          options: [
+            { label: "25 см.", value: "25", price: "425" },
+            { label: "30 см.", value: "30", price: "565" },
+            { label: "40 см.", value: "40", price: "895" }
+          ]
+          // price: [
+          //   { price25: "375", price30: "400", price40: "700" }
+          // ]
+        },
       ]
       // price: ''
     };
