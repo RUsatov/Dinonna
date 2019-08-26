@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <!-- Карусель -->
-    <section>
+    <section class="main-slider">
       <q-carousel
         v-model="slide"
         swipeable
@@ -9,7 +9,7 @@
         control-color="white"
         navigation
         arrows
-        height="504px"
+        height="100%"
         class="bg-primary text-white"
         infinite
       >
@@ -328,6 +328,9 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.main-slider {
+  height 700px
+}
 .terms-delivery {
   &_title {
     font-size: 20px;
