@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="main-font" ref="layout">
-    <q-header elevated class="header q-px-lg">
+    <q-header reveal elevated class="header q-px-lg">
       <q-toolbar>
         <q-btn
           flat
@@ -95,11 +95,17 @@
       <!-- </q-scroll-area> -->
     </q-drawer>
 
+    <q-footer elevated>
+      <q-toolbar>
+        <q-toolbar-title>Footer</q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+
     <q-page-container>
       <router-view />
-      <!-- <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[18, 18]">
-        <q-btn fab icon="keyboard_arrow_up" color="accent" />
-      </q-page-scroller>-->
+      <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[24, 74]">
+        <q-btn fab icon="arrow_upward" color="primary" />
+      </q-page-scroller>
     </q-page-container>
   </q-layout>
 </template>

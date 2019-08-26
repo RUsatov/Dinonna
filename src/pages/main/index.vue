@@ -57,36 +57,50 @@
     </section>
 
     <!-- Мы рекомендуем -->
-    <section class="recomended q-mb-xl q-py-xl">
+    <h3 class="container text-h6 q-mb-md">Мы рекомендуем</h3>
+    <section class="recomended q-mb-xl q-py-lg">
       <div class="container">
-        <div class="row justify-center items-center">
-          <q-card class="card shadow-transition q-mx-md" square v-for="item in products" :key="item.id">
+        <div class="row justify-between items-stretch">
+          <q-card
+            class="card shadow-transition col-3 "
+            square
+            v-for="item in products"
+            :key="item.id"
+          >
             <img :src="item.img" />
 
             <q-card-actions v-if="item.type" class="absolute-top-right">
               <q-chip
-              v-for="(chip, i) in item.type"
-              :key="i"
+                v-for="(chip, i) in item.type"
+                :key="i"
                 size="10px"
                 dense
-                class="text-uppercase card_chip card_chip--sale q-px-sm"
-              > {{ chip }}</q-chip>
+                class="text-uppercase card_chip q-px-sm"
+                :class="{
+                  'card_chip--sale': chip === 'акция',
+                  'card_chip--hit': chip === 'хит',
+                  'card_chip--spicy': chip === 'остро',
+                }"
+              >{{ chip }}</q-chip>
             </q-card-actions>
 
             <q-card-section>
               <div class="text-h6">{{ item.name }}</div>
             </q-card-section>
 
-            <q-card-section>
-              <p>{{ item.description }}</p>
+            <q-card-section class="card-section--margin">
+              <p v-html="item.description"></p>
             </q-card-section>
 
-            <q-separator></q-separator>
+            <div>
+              <q-separator></q-separator>
+            </div>
 
-            <q-card-section >
+            <q-card-section v-if="item.options.length > 0" class="row justify-center">
               <q-btn-toggle
                 unelevated
-                v-model="pizzaDiametr"
+                v-model="item.btn_val"
+                @click="calcPrice(item.options, item.btn_val)"
                 toggle-color="grey-5"
                 no-caps
                 class="text-lowercase"
@@ -96,7 +110,7 @@
 
             <q-card-section>
               <div class="row justify-between">
-                <span class="card_price text-bold">{{ price }} ₽</span>
+                <span class="card_price text-bold">{{ item.options.length > 0 ? calcPrice(item.options, item.btn_val) : item.price }} ₽</span>
                 <span>
                   <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
                 </span>
@@ -104,135 +118,6 @@
             </q-card-section>
           </q-card>
 
-          <!-- <q-card class="card shadow-transition q-mx-md" square>
-            <img src="/statics/img/cards/card2.jpg" />
-
-            <q-card-actions class="absolute-top-right">
-              <q-chip
-                size="10px"
-                dense
-                class="text-uppercase card_chip card_chip--hit q-px-sm"
-              >Акция</q-chip>
-            </q-card-actions>
-
-            <q-card-section>
-              <div class="text-h6">Сальмоне</div>
-            </q-card-section>
-
-            <q-card-section>
-              <p>Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.</p>
-            </q-card-section>
-
-            <q-separator></q-separator>
-
-            <q-card-section>
-              <q-btn-toggle
-                unelevated
-                v-model="pizzaDiametr"
-                toggle-color="grey-5"
-                no-caps
-                class="text-lowercase"
-                :options="[
-                  {label: '25 см.', value: '25'},
-                  {label: '30 см.', value: '30'},
-                  {label: '40 см.', value: '40'}
-                ]"
-              />
-            </q-card-section>
-
-            <q-card-section>
-              <div class="row justify-between">
-                <span class="card_price text-bold">{{ price }} ₽</span>
-                <span>
-                  <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
-                </span>
-              </div>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="card shadow-transition q-mx-md" square>
-            <img src="/statics/img/cards/card3.jpg" />
-
-            <q-card-actions class="absolute-top-right">
-              <q-chip
-                size="10px"
-                dense
-                class="text-uppercase card_chip card_chip--hit q-px-sm"
-              >Акция</q-chip>
-            </q-card-actions>
-
-            <q-card-section>
-              <div class="text-h6">Сальмоне</div>
-            </q-card-section>
-
-            <q-card-section>
-              <p>Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.</p>
-            </q-card-section>
-
-            <q-separator></q-separator>
-
-            <q-card-section>
-              <q-btn-toggle
-                unelevated
-                v-model="pizzaDiametr"
-                toggle-color="grey-5"
-                no-caps
-                class="text-lowercase"
-                :options="[
-                  {label: '25 см.', value: '25'},
-                  {label: '30 см.', value: '30'},
-                  {label: '40 см.', value: '40'}
-                ]"
-              />
-            </q-card-section>
-
-            <q-card-section>
-              <div class="row justify-between">
-                <span class="card_price text-bold">{{ price }} ₽</span>
-                <span>
-                  <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
-                </span>
-              </div>
-            </q-card-section>
-          </q-card>
-
-          <q-card class="card shadow-transition q-mx-md" square>
-            <img src="/statics/img/cards/card4.jpg" />
-
-            <q-card-section>
-              <div class="text-h6">Сальмоне</div>
-            </q-card-section>
-
-            <q-card-section>
-              <p>Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.</p>
-            </q-card-section>
-
-            <q-separator></q-separator>
-
-            <q-card-section>
-              <q-btn-toggle
-                unelevated
-                v-model="pizzaDiametr"
-                toggle-color="grey-5"
-                no-caps
-                class="text-lowercase"
-                :options="[
-                  {label: '25 см.', value: '25'},
-                  {label: '30 см.', value: '30'},
-                  {label: '40 см.', value: '40'}
-                ]"
-              />
-            </q-card-section>
-
-            <q-card-section>
-              <div class="row justify-between">
-                <span class="card_price text-bold">{{ price }} ₽</span>
-                <span>
-                  <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
-                </span>
-              </div>
-            </q-card-section>
-          </q-card> -->
         </div>
       </div>
     </section>
@@ -254,38 +139,60 @@ export default {
       products: [
         {
           id: 1,
-          type: ["Акция"],
+          type: ["акция"],
           img: "/statics/img/cards/card1.jpg",
           category: "pizza",
           name: "Сальмоне",
-          description: "Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.",
+          description:
+            "Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.",
           options: [
             { label: "25 см.", value: "25", price: "375" },
             { label: "30 см.", value: "30", price: "400" },
             { label: "40 см.", value: "40", price: "700" }
-          ]
-          // price: [
-          //   { price25: "375", price30: "400", price40: "700" }
-          // ]
+          ],
+          btn_val: "25"
         },
         {
           id: 2,
-          type: ['остро', 'хит'],
-          img: "/statics/img/cards/card1.jpg",
+          type: ["остро", "хит"],
+          img: "/statics/img/cards/card2.jpg",
           category: "pizza",
           name: "Пицца Барбекю",
-          description: "Куриное филе, бекон с/к, колбаса п/к, болгарский перец, шампиньоны, лук красный маринованный, томатный соус, моцарелла, укроп и петрушка.",
+          description:
+            "Куриное филе, бекон с/к, колбаса п/к, болгарский перец, шампиньоны, лук красный маринованный, томатный соус, моцарелла, укроп и петрушка.",
           options: [
             { label: "25 см.", value: "25", price: "425" },
             { label: "30 см.", value: "30", price: "565" },
             { label: "40 см.", value: "40", price: "895" }
-          ]
-          // price: [
-          //   { price25: "375", price30: "400", price40: "700" }
-          // ]
+          ],
+          btn_val: "25"
         },
-      ]
-      // price: ''
+        {
+          id: 3,
+          type: ["хит"],
+          img: "/statics/img/cards/card3.jpg",
+          category: "iaponskaia-kukhnia",
+          name: "Мимоза",
+          description:
+            "Лосось терияки, перец болгарский, лук зеленый, огурец такуан, снежный краб, кунжут белый, кунжут чёрный, рис, нори. <br/> <b>8 шт.</b>",
+          options: [],
+          btn_val: "",
+          price: '250'
+        },
+        {
+          id: 4,
+          type: [],
+          img: "/statics/img/cards/card4.jpg",
+          category: "iaponskaia-kukhnia",
+          name: "Три пиццы 999 р.",
+          description:
+            "Три пиццы 30 см. Позитано, Пепперони, Маргарита. <br/> <br/>*Сет является акционным, прочие скидки и бонусы не распространяются <br/> <b>1 шт.</b>",
+          options: [],
+          btn_val: "",
+          price: '250'
+        },
+      ],
+      price: ""
     };
   },
   meta: {
@@ -305,32 +212,37 @@ export default {
     }
   },
   computed: {
-    price() {
-      switch (this.pizzaDiametr) {
-        case "25":
-          return "375";
-          break;
-        case "30":
-          return "450";
-          break;
-        case "40":
-          return "700";
-          break;
-
-        default:
-          return "375";
-          break;
-      }
-    }
+    // price() {
+    //   switch (this.pizzaDiametr) {
+    //     case "25":
+    //       return "375";
+    //       break;
+    //     case "30":
+    //       return "450";
+    //       break;
+    //     case "40":
+    //       return "700";
+    //       break;
+    //     default:
+    //       return "375";
+    //       break;
+    //   }
+    // },
   },
-  methods: {}
+  methods: {
+    calcPrice(items, val) {
+      let currentItem = items.find(item => item.value === val);
+      return currentItem.price;
+    }
+  }
 };
 </script>
 
 <style lang="stylus" scoped>
 .main-slider {
-  height 700px
+  height: 700px;
 }
+
 .terms-delivery {
   &_title {
     font-size: 20px;
@@ -348,11 +260,17 @@ export default {
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 250px;
+  max-width: 276px;
+
+  .card-section--margin {
+    margin-bottom: auto;
+  }
 
   &:hover {
-    box-shadow: $shadow-15;
+    box-shadow: $shadow-10;
   }
 
   &_chip {
@@ -365,6 +283,10 @@ export default {
 
     &--hit {
       background-color: rgba(56, 142, 60, 0.8);
+    }
+
+    &--spicy {
+      background-color: rgba(229, 57, 53, 0.8);
     }
   }
 
