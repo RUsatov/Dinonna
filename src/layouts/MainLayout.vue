@@ -44,7 +44,6 @@
           class="q-my-md full-width text-weight-bold text-subtitle1"
         />
       </div>
-      <!-- <q-scroll-area class="fit"> -->
       <q-list class="q-py-xs">
         <q-separator spaced />
         <!-- Заголовок меню -->
@@ -92,20 +91,157 @@
           <!-- </q-slide-transition> -->
         </div>
       </q-list>
-      <!-- </q-scroll-area> -->
     </q-drawer>
 
-    <q-footer elevated>
-      <q-toolbar>
-        <q-toolbar-title>Footer</q-toolbar-title>
-      </q-toolbar>
-    </q-footer>
-
-    <q-page-container>
+    <q-page-container class="layout--bg-color">
       <router-view />
+
       <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[24, 74]">
         <q-btn fab icon="arrow_upward" color="primary" />
       </q-page-scroller>
+
+      <footer reveal class="footer--bg-color">
+        <div class="container">
+          <div class="row footer--text">
+            <div class="col-md-4 col-12">
+              <q-list class="q-my-xl q-mr-md">
+                <q-item-label class="q-mb-lg">Контакты</q-item-label>
+
+                <a href="tel: 903-903">
+                  <q-item clickable v-ripple dark class="q-py-md">
+                    <q-item-section side>
+                      <q-icon size="24px" name="local_phone" color="white" />
+                    </q-item-section>
+                    <q-item-section class="q-pl-md">
+                      <p>903-903</p>
+                      <p class="item--text-second">Телефон</p>
+                    </q-item-section>
+                  </q-item>
+                </a>
+
+                <q-item clickable dark class="q-py-md">
+                  <q-item-section side>
+                    <q-icon size="24px" name="home" color="white" />
+                  </q-item-section>
+                  <q-item-section class="q-pl-md">
+                    <p>Нехинская, 57</p>
+                    <p class="item--text-second">Адрес</p>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+
+            <div class="col-md-4 col-12">
+              <q-list class="q-my-xl q-mx-md">
+                <q-item-label class="q-mb-lg">Наши приложения</q-item-label>
+
+                <a
+                  href="https://play.google.com/store/apps/details?id=com.FoodSoul.VNovgorodDinonnaPizze"
+                  rel="nofollow"
+                >
+                  <q-item clickable v-ripple dark>
+                    <q-item-section side>
+                      <q-icon size="24px" color="white" name="android" />
+                    </q-item-section>
+                    <q-item-section class="q-pl-md">
+                      <p>Скачать в Google Play</p>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-icon size="24px" name="launch" />
+                    </q-item-section>
+                  </q-item>
+                </a>
+
+                <a
+                  href="https://apps.apple.com/us/app/dinonna-pizze/id1041992595?l=ru&ls=1"
+                  rel="nofollow"
+                >
+                  <q-item clickable dark>
+                    <q-item-section side>
+                      <q-icon size="24px" name="fab fa-apple" color="white" />
+                    </q-item-section>
+                    <q-item-section class="q-pl-md">
+                      <p>Скачать в AppStore</p>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-icon size="24px" name="launch" />
+                    </q-item-section>
+                  </q-item>
+                </a>
+              </q-list>
+            </div>
+
+            <div class="col-md-4 col-12">
+              <q-list class="q-my-xl q-ml-md">
+                <q-item-label class="q-mb-lg">Наши приложения</q-item-label>
+
+                <a href="https://vk.com/dinonna_pizzeria" rel="nofollow">
+                  <q-item clickable v-ripple dark>
+                    <q-item-section side>
+                      <q-icon size="24px" color="white" name="fab fa-vk" />
+                    </q-item-section>
+                    <q-item-section class="q-pl-md">
+                      <p>ВКонтакте</p>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-icon size="24px" name="launch" />
+                    </q-item-section>
+                  </q-item>
+                </a>
+
+                <a href="https://www.facebook.com/DinonnaPizzaSushi/" rel="nofollow">
+                  <q-item clickable dark>
+                    <q-item-section side>
+                      <q-icon size="24px" name="fab fa-facebook-f" color="white" />
+                    </q-item-section>
+                    <q-item-section class="q-pl-md">
+                      <p>Facebook</p>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-icon size="24px" name="launch" />
+                    </q-item-section>
+                  </q-item>
+                </a>
+
+                <a href="https://www.instagram.com/dinonna.ru/" rel="nofollow">
+                  <q-item clickable dark>
+                    <q-item-section side>
+                      <q-icon size="24px" name="fab fa-instagram" color="white" />
+                    </q-item-section>
+                    <q-item-section class="q-pl-md">
+                      <p>Instagram</p>
+                    </q-item-section>
+                    <q-item-section side>
+                      <q-icon size="24px" name="launch" />
+                    </q-item-section>
+                  </q-item>
+                </a>
+              </q-list>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom--bg-color q-py-lg">
+          <div class="container">
+            <div class="row justify-between items-center">
+              <div class="footer_links">
+                <a
+                  href="https://dinonna.ru/privacy-policy/ru"
+                  rel="nofollow"
+                  class="q-mr-md"
+                >Политика конфиденциальности</a>
+                <a href="https://dinonna.ru/offer/ru" rel="nofollow">Публичная оферта</a>
+                <br />
+                <a href="https://rusatov.ru/" rel="nofollow" class="row q-mt-sm">© FoodSoul, 2019</a>
+              </div>
+              <div class="footer_language">
+                <button class="language_btn language_btn--margin"><img src="https://dinonna.ru/assets/2VM0cT7.svg" alt="ua" class="language_img"></button>
+                <button class="language_btn language_btn--margin language_btn--active"><img src="https://dinonna.ru/assets/1czl6Nx.svg" alt="ru" class="language_img"></button>
+                <button class="language_btn"><img src="https://dinonna.ru/assets/3B_88CC.svg" alt="uk" class="language_img"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
     </q-page-container>
   </q-layout>
 </template>
@@ -309,5 +445,48 @@ export default {
 
 .bg-item {
   background-color: #CCCCCC;
+}
+.layout--bg-color {
+  background-color #f2f2f2
+}
+.footer--bg-color {
+  background-color: $secondary;
+}
+
+.footer--text {
+  color: #fff;
+  font-size: 16px;
+}
+
+.footer-bottom--bg-color {
+  background-color: $secondary-dark;
+}
+.footer_links {
+  text-decoration underline
+  color: #fff;
+}
+.footer_language {
+  .language_btn {
+    width 22px
+    height 16px
+    opacity: .4
+    &:hover {
+      opacity: 1
+    }
+    &--margin {
+      margin-right 8px
+    }
+    &--active {
+      opacity: 1
+    }
+  }
+  .language_img {
+    max-width: 100%;
+  }
+}
+
+.item--text-second {
+  font-size: 14px;
+  opacity: 0.7;
 }
 </style>

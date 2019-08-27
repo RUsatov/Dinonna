@@ -244,6 +244,7 @@ export default {
 }
 
 .terms-delivery {
+  background-color #fff
   &_title {
     font-size: 20px;
   }
