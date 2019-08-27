@@ -8,6 +8,7 @@ const routes = [
       { path: '/feedback', component: () => import('pages/feedback/Index.vue') },
       {
         path: '*',
+        name: 'Error404',
         component: () => import('pages/Error404.vue')
       }
     ]
@@ -18,6 +19,7 @@ const routes = [
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
+    name: 'Error404',
     component: () => import('pages/Error404.vue')
   })
 }

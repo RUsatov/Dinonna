@@ -26,7 +26,7 @@
     <!-- Условия доставки -->
     <section>
       <div class="container q-mb-xl">
-        <div class="terms-delivery row justify-center q-mt-lg shadow-1">
+        <div class="terms-delivery bg-white row justify-center q-mt-lg shadow-1">
           <div class="items-center justify-center column col-md col-6 q-pa-md">
             <q-icon name="far fa-clock" size="24px" class="q-mb-sm" />
             <p class="terms-delivery_title q-ma-none q-mb-xs">до 60 мин.</p>
@@ -244,7 +244,6 @@ export default {
 }
 
 .terms-delivery {
-  background-color #fff
   &_title {
     font-size: 20px;
   }

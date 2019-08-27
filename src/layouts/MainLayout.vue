@@ -21,7 +21,7 @@
     <q-drawer v-model="leftDrawerOpen" content-class="bg-white" :width="256" elevated>
       <!-- Логотип -->
       <router-link to="/">
-        <q-img src="./statics/img/logo.png" spinner-color="white" />
+        <q-img src="./statics/img/logo.png" spinner-color="primary" />
       </router-link>
 
       <!-- Район доставки с номером телефона -->
@@ -100,7 +100,7 @@
         <q-btn fab icon="arrow_upward" color="primary" />
       </q-page-scroller>
 
-      <footer reveal class="footer--bg-color">
+      <footer v-if="$route.name !== 'Error404'" class="footer--bg-color">
         <div class="container">
           <div class="row footer--text">
             <div class="col-md-4 col-12">
@@ -430,7 +430,7 @@ export default {
     toggleDropdownList(item) {
       item.open = !item.open;
       this.changeHeaderTitle(item);
-    }
+    },
     // openURL
   }
 };
