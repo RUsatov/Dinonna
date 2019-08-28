@@ -4,8 +4,9 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/', component: () => import('pages/main/Index.vue') },
-      { path: '/feedback', component: () => import('pages/feedback/Index.vue') },
+      { path: '/', name: 'main', component: () => import('pages/main/Index.vue') },
+      { path: '/feedback', name: 'feedback', component: () => import('pages/feedback/Index.vue') },
+      { path: '/about', name: 'about', component: () => import('pages/about/Index.vue') },
       {
         path: '*',
         name: 'Error404',

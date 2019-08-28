@@ -6,6 +6,7 @@
         v-model="slide"
         swipeable
         animated
+        autoplay
         control-color="white"
         navigation
         arrows
@@ -61,62 +62,62 @@
     <section class="recomended q-mb-xl q-py-lg">
       <div class="container">
         <div class="row justify-between items-stretch">
-          <q-card
-            class="card shadow-transition col-3 "
-            square
-            v-for="item in products"
-            :key="item.id"
-          >
-            <img :src="item.img" />
-
-            <q-card-actions v-if="item.type" class="absolute-top-right">
-              <q-chip
-                v-for="(chip, i) in item.type"
-                :key="i"
-                size="10px"
-                dense
-                class="text-uppercase card_chip q-px-sm"
-                :class="{
-                  'card_chip--sale': chip === 'акция',
-                  'card_chip--hit': chip === 'хит',
-                  'card_chip--spicy': chip === 'остро',
-                }"
-              >{{ chip }}</q-chip>
-            </q-card-actions>
-
-            <q-card-section>
-              <div class="text-h6">{{ item.name }}</div>
-            </q-card-section>
-
-            <q-card-section class="card-section--margin">
-              <p v-html="item.description"></p>
-            </q-card-section>
-
-            <div>
-              <q-separator></q-separator>
-            </div>
-
-            <q-card-section v-if="item.options.length > 0" class="row justify-center">
-              <q-btn-toggle
-                unelevated
-                v-model="item.btn_val"
-                @click="calcPrice(item.options, item.btn_val)"
-                toggle-color="grey-5"
-                no-caps
-                class="text-lowercase"
-                :options="item.options"
-              />
-            </q-card-section>
-
-            <q-card-section>
-              <div class="row justify-between">
-                <span class="card_price text-bold">{{ item.options.length > 0 ? calcPrice(item.options, item.btn_val) : item.price }} ₽</span>
-                <span>
-                  <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
-                </span>
+          <div class="q-mb-lg q-px-md col-lg-3 col-lg-4" v-for="item in products" :key="item.id">
+            <q-card
+              class="card shadow-transition"
+              square
+            >
+              <img :src="item.img" />
+  
+              <q-card-actions v-if="item.type" class="absolute-top-right">
+                <q-chip
+                  v-for="(chip, i) in item.type"
+                  :key="i"
+                  size="10px"
+                  dense
+                  class="text-uppercase card_chip q-px-sm"
+                  :class="{
+                    'card_chip--sale': chip === 'акция',
+                    'card_chip--hit': chip === 'хит',
+                    'card_chip--spicy': chip === 'остро',
+                  }"
+                >{{ chip }}</q-chip>
+              </q-card-actions>
+  
+              <q-card-section>
+                <div class="text-h6">{{ item.name }}</div>
+              </q-card-section>
+  
+              <q-card-section class="card-section--margin">
+                <p v-html="item.description"></p>
+              </q-card-section>
+  
+              <div>
+                <q-separator></q-separator>
               </div>
-            </q-card-section>
-          </q-card>
+  
+              <q-card-section v-if="item.options.length > 0" class="row justify-center">
+                <q-btn-toggle
+                  unelevated
+                  v-model="item.btn_val"
+                  @click="calcPrice(item.options, item.btn_val)"
+                  toggle-color="grey-5"
+                  no-caps
+                  class="text-lowercase"
+                  :options="item.options"
+                />
+              </q-card-section>
+  
+              <q-card-section>
+                <div class="row justify-between">
+                  <span class="card_price text-bold">{{ item.options.length > 0 ? calcPrice(item.options, item.btn_val) : item.price }} ₽</span>
+                  <span>
+                    <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
+                  </span>
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
 
         </div>
       </div>
@@ -240,7 +241,7 @@ export default {
 
 <style lang="stylus" scoped>
 .main-slider {
-  height: 700px;
+  height: 60vh;
 }
 
 .terms-delivery {

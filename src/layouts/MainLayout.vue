@@ -10,7 +10,7 @@
           aria-label="Menu"
           class="mobile-only"
         >
-          <q-icon name="menu" />
+          <q-icon name="menu" class="text-main" />
         </q-btn>
 
         <q-toolbar-title class="text-main text-h5">{{ headerTitle }}</q-toolbar-title>
@@ -234,9 +234,15 @@
                 <a href="https://rusatov.ru/" rel="nofollow" class="row q-mt-sm">© FoodSoul, 2019</a>
               </div>
               <div class="footer_language">
-                <button class="language_btn language_btn--margin"><img src="https://dinonna.ru/assets/2VM0cT7.svg" alt="ua" class="language_img"></button>
-                <button class="language_btn language_btn--margin language_btn--active"><img src="https://dinonna.ru/assets/1czl6Nx.svg" alt="ru" class="language_img"></button>
-                <button class="language_btn"><img src="https://dinonna.ru/assets/3B_88CC.svg" alt="uk" class="language_img"></button>
+                <button class="language_btn language_btn--margin">
+                  <img src="https://dinonna.ru/assets/2VM0cT7.svg" alt="ua" class="language_img" />
+                </button>
+                <button class="language_btn language_btn--margin language_btn--active">
+                  <img src="https://dinonna.ru/assets/1czl6Nx.svg" alt="ru" class="language_img" />
+                </button>
+                <button class="language_btn">
+                  <img src="https://dinonna.ru/assets/3B_88CC.svg" alt="uk" class="language_img" />
+                </button>
               </div>
             </div>
           </div>
@@ -430,7 +436,7 @@ export default {
     toggleDropdownList(item) {
       item.open = !item.open;
       this.changeHeaderTitle(item);
-    },
+    }
     // openURL
   }
 };
@@ -446,9 +452,11 @@ export default {
 .bg-item {
   background-color: #CCCCCC;
 }
+
 .layout--bg-color {
-  background-color #f2f2f2
+  background-color: #f2f2f2;
 }
+
 .footer--bg-color {
   background-color: $secondary;
 }
@@ -461,32 +469,33 @@ export default {
 .footer-bottom--bg-color {
   background-color: $secondary-dark;
 }
+
 .footer_links {
-  text-decoration underline
+  text-decoration: underline;
   color: #fff;
 }
+
 .footer_language {
   .language_btn {
-    width 22px
-    height 16px
-    opacity: .4
+    width: 22px;
+    height: 16px;
+    opacity: 0.4;
+
     &:hover {
-      opacity: 1
+      opacity: 1;
     }
+
     &--margin {
-      margin-right 8px
+      margin-right: 8px;
     }
+
     &--active {
-      opacity: 1
+      opacity: 1;
     }
   }
+
   .language_img {
     max-width: 100%;
   }
-}
-
-.item--text-second {
-  font-size: 14px;
-  opacity: 0.7;
 }
 </style>
