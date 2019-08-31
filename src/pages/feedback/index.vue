@@ -18,7 +18,7 @@
                   <q-icon v-else name="far fa-frown" color="red" size="24px" />
                 </div>
               </div>
-              <div class="post_body bg-white row q-pa-md shadow-2">
+              <div class="post_body bg-white row q-pa-md shadow-2 no-wrap">
                 <div class="post_img self-center">
                   <q-img
                     v-if="post.img"
@@ -43,7 +43,7 @@
                     </template>
                   </q-img>
                 </div>
-                <p class="post_content q-ml-md">{{ post.text }}</p>
+                <p class="post_content q-ml-md no-wrap">{{ post.text }}</p>
               </div>
             </div>
           </div>

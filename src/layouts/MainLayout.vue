@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="main-font" ref="layout">
-    <q-header reveal elevated class="header q-px-lg">
+    <q-header reveal elevated class="header q-px-md-lg q-px-none">
       <q-toolbar>
         <q-btn
           flat
@@ -96,7 +96,7 @@
     <q-page-container class="layout--bg-color">
       <router-view />
 
-      <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[24, 74]">
+      <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[24, 74]" class="desktop-only">
         <q-btn fab icon="arrow_upward" color="primary" />
       </q-page-scroller>
 
@@ -104,7 +104,7 @@
         <div class="container">
           <div class="row footer--text">
             <div class="col-md-4 col-12">
-              <q-list class="q-my-xl q-mr-md">
+              <q-list class="q-my-md-xl q-mb-md q-mt-xl q-mr-md-md q-mr-none">
                 <q-item-label class="q-mb-lg">Контакты</q-item-label>
 
                 <a href="tel: 903-903">
@@ -132,7 +132,7 @@
             </div>
 
             <div class="col-md-4 col-12">
-              <q-list class="q-my-xl q-mx-md">
+              <q-list class="q-my-md-xl q-my-md q-mx-md-md q-mx-none">
                 <q-item-label class="q-mb-lg">Наши приложения</q-item-label>
 
                 <a
@@ -172,7 +172,7 @@
             </div>
 
             <div class="col-md-4 col-12">
-              <q-list class="q-my-xl q-ml-md">
+              <q-list class="q-my-md-xl q-mt-md q-mb-xl q-ml-md-md q-ml-none">
                 <q-item-label class="q-mb-lg">Наши приложения</q-item-label>
 
                 <a href="https://vk.com/dinonna_pizzeria" rel="nofollow">
@@ -223,17 +223,18 @@
         <div class="footer-bottom--bg-color q-py-lg">
           <div class="container">
             <div class="row justify-between items-center">
-              <div class="footer_links">
+              <div class="footer_links row-md column">
                 <a
                   href="https://dinonna.ru/privacy-policy/ru"
                   rel="nofollow"
-                  class="q-mr-md"
+                  class="q-mr-md text-no-wrap"
                 >Политика конфиденциальности</a>
-                <a href="https://dinonna.ru/offer/ru" rel="nofollow">Публичная оферта</a>
-                <br />
+                <a href="https://dinonna.ru/offer/ru" rel="nofollow" class="text-no-wrap">Публичная оферта</a>
+                <!-- <br /> -->
+                <div class="full-width"></div>
                 <a href="https://rusatov.ru/" rel="nofollow" class="row q-mt-sm">© FoodSoul, 2019</a>
               </div>
-              <div class="footer_language">
+              <div class="footer_language row-md column q-mx-md-none q-mx-auto q-mt-md-none q-mt-md">
                 <button class="language_btn language_btn--margin">
                   <img src="https://dinonna.ru/assets/2VM0cT7.svg" alt="ua" class="language_img" />
                 </button>
@@ -487,6 +488,10 @@ export default {
 
     &--margin {
       margin-right: 8px;
+      @media screen and (max-width: 959.98px) {
+      margin-right 0
+      margin-bottom 10px
+    }
     }
 
     &--active {
@@ -498,4 +503,5 @@ export default {
     max-width: 100%;
   }
 }
+
 </style>
