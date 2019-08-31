@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="main-font" ref="layout">
-    <q-header reveal elevated class="header q-px-md-lg q-px-none">
+    <q-header elevated class="header q-px-md-lg q-px-none">
       <q-toolbar>
         <q-btn
           flat
@@ -14,7 +14,66 @@
         </q-btn>
 
         <q-toolbar-title class="text-main text-h5">{{ headerTitle }}</q-toolbar-title>
+
+        <!-- <q-chip size="10px" dense icon-right="" class="absolute-top-left">200 руб</q-chip> -->
+        <q-btn
+          v-if="sumPrice"
+          flat
+          no-caps
+          align="around"
+          icon-right="shopping_cart"
+          class="btn-fixed-width"
+          :label="`${sumPrice} руб`"
+          @click="openCart()"
+        ></q-btn>
       </q-toolbar>
+
+      <!-- Модалка корзины -->
+      <q-dialog v-model="openCartModal">
+        <q-card class="cart">
+          <q-card-section>
+            <div class="text-h6">Корзина</div>
+          </q-card-section>
+
+          <q-card-section class="row no-wrap items-center" v-for="item in products" :key="item.id + item.btn_val">
+            <q-img
+              v-if="item.img"
+              :ratio="1"
+              style="max-width: 50px; height: 50px; border-radius: 50%;"
+              :src="item.img"
+            >
+              <template v-slot:loading>
+                <q-spinner-gears color="primary" />
+              </template>
+            </q-img>
+            <div class="q-pl-md">
+              <p>{{item.name}}</p>
+              <p>{{item.options.label}}</p>
+            </div>
+
+            <div class="q-ml-auto row">
+              <div class="counter row items-center q-mr-lg">
+                <q-btn @click="changeAmount(item, '-')" flat round size="10px" color="text-main" icon="fas fa-minus" />
+                <q-chip color="secondary" text-color="white" class="q-mx-sm text-subtitle1"> {{ item.count }}</q-chip>
+                <q-btn @click="changeAmount(item, '+')" flat round size="10px" color="text-main" icon="fas fa-plus" />
+              </div>
+              <span class="price text-h6">{{ item.totalPrice }} ₽</span>
+            </div>
+          </q-card-section>
+
+          <q-separator></q-separator>
+
+          <q-card-section align="right">
+            <p class="text-subtitle1">К оплате:</p>
+            <p class="text-h5">{{ sumPrice }} ₽</p>
+
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Очистить корзину" color="primary" @click="clearCart()" />
+            <q-btn flat label="Заказать" color="secondary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-header>
 
     <!-- Сайдбар -->
@@ -95,10 +154,6 @@
 
     <q-page-container class="layout--bg-color">
       <router-view />
-
-      <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[24, 74]" class="desktop-only">
-        <q-btn fab icon="arrow_upward" color="primary" />
-      </q-page-scroller>
 
       <footer v-if="$route.name !== 'Error404'" class="footer--bg-color">
         <div class="container">
@@ -229,12 +284,18 @@
                   rel="nofollow"
                   class="q-mr-md text-no-wrap"
                 >Политика конфиденциальности</a>
-                <a href="https://dinonna.ru/offer/ru" rel="nofollow" class="text-no-wrap">Публичная оферта</a>
+                <a
+                  href="https://dinonna.ru/offer/ru"
+                  rel="nofollow"
+                  class="text-no-wrap"
+                >Публичная оферта</a>
                 <!-- <br /> -->
                 <div class="full-width"></div>
                 <a href="https://rusatov.ru/" rel="nofollow" class="row q-mt-sm">© FoodSoul, 2019</a>
               </div>
-              <div class="footer_language row-md column q-mx-md-none q-mx-auto q-mt-md-none q-mt-md">
+              <div
+                class="footer_language row-md column q-mx-md-none q-mx-auto q-mt-md-none q-mt-md"
+              >
                 <button class="language_btn language_btn--margin">
                   <img src="https://dinonna.ru/assets/2VM0cT7.svg" alt="ua" class="language_img" />
                 </button>
@@ -249,6 +310,15 @@
           </div>
         </div>
       </footer>
+
+      <q-page-scroller
+        position="bottom-right"
+        :scroll-offset="150"
+        :offset="[24, 74]"
+        class="desktop-only"
+      >
+        <q-btn fab icon="arrow_upward" color="primary" />
+      </q-page-scroller>
     </q-page-container>
   </q-layout>
 </template>
@@ -261,6 +331,8 @@ export default {
       leftDrawerOpen: this.$q.platform.is.desktop,
       showJapanKitchen: false,
       headerTitle: "Главная",
+      products: [],
+      openCartModal: false,
       select: {
         district: "В черте города"
       },
@@ -407,13 +479,75 @@ export default {
           icon: "info",
           open: false
         }
-      ]
+      ],
     };
   },
   created() {
     this.changeHeaderTitle();
   },
+  computed: {
+    /**
+     * Получает из хранилища добавленные в корзину товары
+     * @return {array} массив из объектов добавленных товаров
+     */
+    getProducts() {
+      return this.$store.getters["cart/product"];
+    },
+    /**
+     * Рассчитывает полную стоимость заказа
+     * @return {number} - цена заказа
+     */
+    sumPrice() {
+      let price = 0;
+      this.getProducts.forEach(item => {
+        price += item.totalPrice
+      })
+      return price;
+    },
+  },
   methods: {
+    openCart() {
+      this.openCartModal = true;
+      let seen = new Set();
+
+      // Проверяет, есть ли дубликаты в масиве getProducts. Сравнивает объекты по полям id и btn_val
+      let hasDuplicates = this.getProducts.some(function(currentObject) {
+        return seen.size === seen.add(currentObject.id).size
+        || seen.size === seen.add(currentObject.btn_val).size;
+      });
+
+      if (hasDuplicates) {
+        // let res = this.getProducts.reduce((acc, el) => {
+        //   acc[el] = (acc[el] || 0) + 1;
+        //   return acc;
+        // }, {})
+        var arr = this.getProducts;
+        var result = {};
+        for (var i = 0; i < arr.length; ++i)
+        {
+            var a = arr[i];
+            if (result[a] != undefined)
+                ++result[a];
+            else
+                result[a] = 1;
+        }
+        console.log(result);
+        // Отфильтровывает массив удаляя дубликаты
+        const uniqueArray = this.getProducts.filter((thing, index) => {
+          return index === this.getProducts.findIndex(obj => {
+            return JSON.stringify(obj) === JSON.stringify(thing);
+          });
+        });
+       console.log(result);
+       console.log(JSON.stringify( result, null, 2));
+
+        this.products = uniqueArray;
+      }
+    },
+    /**
+     * Изменение заголовка в шапке при смене роута.
+     * Получает массив из элементов меню и проверяет на совпадение с имененм роута
+     */
     changeHeaderTitle() {
       this.menuItems.forEach(item => {
         if (this.$route.fullPath === item.link) {
@@ -426,18 +560,46 @@ export default {
           });
         }
       });
-      // let currentPath = this.$route.fullPath,
-      //     currentObject = this.menuItems.find(item => item.link === currentPath);
-      // for ( let item in currentObject) {
-      //   if (currentObject[item] === currentPath) {
-      //     this.headerTitle = currentObject.name;
-      //   }
-      // }
     },
+    /**
+     * Открывает выпадающий список в меню
+     * @param {object} item - кликнутый список
+     */
     toggleDropdownList(item) {
       item.open = !item.open;
       this.changeHeaderTitle(item);
-    }
+    },
+    /**
+     * Очищает корзину и закрывает модалку
+     */
+    clearCart() {
+      this.openCartModal = false;
+      this.$store.dispatch('cart/clearCart');
+    },
+    /**
+     * Меняет количество выбранного элемента
+     * @param {object} item - выбранный элемент
+     * @param {string} sign - знак сложения или вычитания
+     */
+    changeAmount(item, sign) {
+      if (sign === '-') {
+        if (item.count > 1) {
+          item.count--
+        } else {
+          let idx = this.products.findIndex(nod => {
+            return nod.id === item.id;
+          })
+          this.products.splice(idx, 1);
+
+          if (this.products.length === 0) {
+            this.clearCart();
+          }
+        }
+      } else {
+        item.count++;
+      }
+      item.totalPrice = item.price * item.count;
+    },
     // openURL
   }
 };
@@ -456,6 +618,14 @@ export default {
 
 .layout--bg-color {
   background-color: #f2f2f2;
+}
+
+.btn-fixed-width {
+  width: 150px;
+}
+
+.cart {
+  min-width: 50%;
 }
 
 .footer--bg-color {
@@ -488,10 +658,11 @@ export default {
 
     &--margin {
       margin-right: 8px;
+
       @media screen and (max-width: 959.98px) {
-      margin-right 0
-      margin-bottom 10px
-    }
+        margin-right: 0;
+        margin-bottom: 10px;
+      }
     }
 
     &--active {

@@ -98,7 +98,7 @@
                   unelevated
                   spread
                   v-model="item.btn_val"
-                  @click="calcPrice(item.options, item.btn_val)"
+                  @click="showPricePizza(item.options, item.btn_val)"
                   toggle-color="grey-5"
                   no-caps
                   class="full-width"
@@ -110,9 +110,9 @@
                 <div class="row justify-between">
                   <span
                     class="card_price text-bold"
-                  >{{ item.options.length > 0 ? calcPrice(item.options, item.btn_val) : item.price }} ₽</span>
+                  >{{ item.options.length > 0 ? showPricePizza(item.options, item.btn_val) : item.price }} ₽</span>
                   <span>
-                    <q-btn flat class="text-bold" color="secondary" label="В корзину"></q-btn>
+                    <q-btn @click="addToCart(item)" flat class="text-bold" color="secondary" label="В корзину"></q-btn>
                   </span>
                 </div>
               </q-card-section>
@@ -129,6 +129,7 @@ export default {
   data() {
     return {
       slide: 1,
+      doubleId: [],
       slideImage: [
         "./statics/img/slider/slide1.jpg",
         "./statics/img/slider/slide2.jpg",
@@ -146,9 +147,9 @@ export default {
           description:
             "Филе лосося в соусе терияки, томаты, моцарелла, маслины, томатный соус, моцарелла, укроп и петрушка.",
           options: [
-            { label: "25 см.", value: "25", price: "375" },
-            { label: "30 см.", value: "30", price: "400" },
-            { label: "40 см.", value: "40", price: "700" }
+            { label: "25 см.", value: "25", price: 375 },
+            { label: "30 см.", value: "30", price: 400 },
+            { label: "40 см.", value: "40", price: 700 }
           ],
           btn_val: "25"
         },
@@ -161,9 +162,9 @@ export default {
           description:
             "Куриное филе, бекон с/к, колбаса п/к, болгарский перец, шампиньоны, лук красный маринованный, томатный соус, моцарелла, укроп и петрушка.",
           options: [
-            { label: "25 см.", value: "25", price: "425" },
-            { label: "30 см.", value: "30", price: "565" },
-            { label: "40 см.", value: "40", price: "895" }
+            { label: "25 см.", value: "25", price: 425 },
+            { label: "30 см.", value: "30", price: 565 },
+            { label: "40 см.", value: "40", price: 895 }
           ],
           btn_val: "25"
         },
@@ -177,7 +178,7 @@ export default {
             "Лосось терияки, перец болгарский, лук зеленый, огурец такуан, снежный краб, кунжут белый, кунжут чёрный, рис, нори. <br/> <b>8 шт.</b>",
           options: [],
           btn_val: "",
-          price: "250"
+          price: 250
         },
         {
           id: 4,
@@ -189,7 +190,7 @@ export default {
             "Три пиццы 30 см. Позитано, Пепперони, Маргарита. <br/> <br/>*Сет является акционным, прочие скидки и бонусы не распространяются <br/> <b>1 шт.</b>",
           options: [],
           btn_val: "",
-          price: "250"
+          price: 999
         }
       ],
       price: ""
@@ -212,27 +213,55 @@ export default {
     }
   },
   computed: {
-    // price() {
-    //   switch (this.pizzaDiametr) {
-    //     case "25":
-    //       return "375";
-    //       break;
-    //     case "30":
-    //       return "450";
-    //       break;
-    //     case "40":
-    //       return "700";
-    //       break;
-    //     default:
-    //       return "375";
-    //       break;
-    //   }
-    // },
+    disableBtn() {
+      let products = this.$store.getters["cart/product"];
+      // products.find(item => {
+      //   item.btn_val
+      // })
+    }
   },
   methods: {
-    calcPrice(items, val) {
+    /**
+     * Отображает цену товара в зависимости от диаметра пиццы
+     * @param {array} items - массив значений (заголовок, диаметр, цена)
+     * @param {string} val - выбранное значение кнопки
+     * @return {number} - текущая цена пиццы
+     */
+    showPricePizza(items, val) {
       let currentItem = items.find(item => item.value === val);
       return currentItem.price;
+    },
+    /**
+     * Добавление товара в корзину.
+     * @param {object} item - данные конкретно выбранного товара
+     */
+    addToCart(item) {
+      let product = Object.assign({}, item); // клонируем полученный объект
+      if (product.options.length > 0) {
+        let objPrice = product.options.find(nod => nod.value == product.btn_val);
+        product.options = objPrice;
+        product.price = objPrice.price;
+      }
+      product.count = 1; // добавляем в объект значение счётчика
+      product.totalPrice = product.price; // добавляем в объект вспомогательное значение цены для расчёта цены по счётчику
+
+      // this.doubleId.push({id: product.id, value: product.options.value});
+      // let seen = new Set();
+      // let hasDuplicates = this.doubleId.some(function(currentObject) {
+      //   return seen.size === seen.add(currentObject.id).size
+      //   || seen.size === seen.add(currentObject.value).size;
+      // });
+      // if (hasDuplicates) {
+      //   const uniqueArray = this.doubleId.filter((thing, index) => {
+      //     return index === this.doubleId.findIndex(obj => {
+      //       return JSON.stringify(obj) === JSON.stringify(thing);
+      //     });
+      //   });
+
+      //   this.doubleId = uniqueArray;
+      //   product.count++
+      // } else
+      this.$store.dispatch('cart/addCart', product);
     }
   }
 };
