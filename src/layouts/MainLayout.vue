@@ -35,7 +35,11 @@
             <div class="text-h6">Корзина</div>
           </q-card-section>
 
-          <q-card-section class="row no-wrap items-center" v-for="item in products" :key="item.id + item.btn_val">
+          <q-card-section
+            class="row no-wrap items-center"
+            v-for="item in products"
+            :key="item.id + item.btn_val"
+          >
             <q-img
               v-if="item.img"
               :ratio="1"
@@ -51,13 +55,31 @@
               <p>{{item.options.label}}</p>
             </div>
 
-            <div class="q-ml-auto row">
-              <div class="counter row items-center q-mr-lg">
-                <q-btn @click="changeAmount(item, '-')" flat round size="10px" color="text-main" icon="fas fa-minus" />
-                <q-chip color="secondary" text-color="white" class="q-mx-sm text-subtitle1"> {{ item.count }}</q-chip>
-                <q-btn @click="changeAmount(item, '+')" flat round size="10px" color="text-main" icon="fas fa-plus" />
+            <div class="q-ml-auto row-sm column">
+              <div class="counter row-sm column reverse items-center q-mr-lg">
+                <q-btn
+                  @click="changeAmount(item, '-')"
+                  flat
+                  round
+                  size="10px"
+                  color="text-main"
+                  icon="fas fa-minus"
+                />
+                <q-chip
+                  color="secondary"
+                  text-color="white"
+                  class="q-mx-sm text-subtitle1"
+                >{{ item.count }}</q-chip>
+                <q-btn
+                  @click="changeAmount(item, '+')"
+                  flat
+                  round
+                  size="10px"
+                  color="text-main"
+                  icon="fas fa-plus"
+                />
               </div>
-              <span class="price text-h6">{{ item.totalPrice }} ₽</span>
+              <span class="price text-h6 self-center">{{ item.totalPrice }} ₽</span>
             </div>
           </q-card-section>
 
@@ -66,7 +88,6 @@
           <q-card-section align="right">
             <p class="text-subtitle1">К оплате:</p>
             <p class="text-h5">{{ sumPrice }} ₽</p>
-
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="Очистить корзину" color="primary" @click="clearCart()" />
@@ -479,7 +500,7 @@ export default {
           icon: "info",
           open: false
         }
-      ],
+      ]
     };
   },
   created() {
@@ -500,49 +521,43 @@ export default {
     sumPrice() {
       let price = 0;
       this.getProducts.forEach(item => {
-        price += item.totalPrice
-      })
+        price += item.totalPrice;
+      });
       return price;
-    },
+    }
   },
   methods: {
+    /**
+     * Функция при открытии корзины.
+     * Проверяет массив getProducts на дубликаты и если они есть отфильтровывает его.
+     */
     openCart() {
       this.openCartModal = true;
       let seen = new Set();
 
       // Проверяет, есть ли дубликаты в масиве getProducts. Сравнивает объекты по полям id и btn_val
       let hasDuplicates = this.getProducts.some(function(currentObject) {
-        return seen.size === seen.add(currentObject.id).size
-        || seen.size === seen.add(currentObject.btn_val).size;
+        return (
+          seen.size === seen.add(currentObject.id).size ||
+          seen.size === seen.add(currentObject.btn_val).size
+        );
       });
 
       if (hasDuplicates) {
-        // let res = this.getProducts.reduce((acc, el) => {
-        //   acc[el] = (acc[el] || 0) + 1;
-        //   return acc;
-        // }, {})
-        var arr = this.getProducts;
-        var result = {};
-        for (var i = 0; i < arr.length; ++i)
-        {
-            var a = arr[i];
-            if (result[a] != undefined)
-                ++result[a];
-            else
-                result[a] = 1;
-        }
-        console.log(result);
+
         // Отфильтровывает массив удаляя дубликаты
         const uniqueArray = this.getProducts.filter((thing, index) => {
-          return index === this.getProducts.findIndex(obj => {
-            return JSON.stringify(obj) === JSON.stringify(thing);
-          });
+          return (
+            index ===
+            this.getProducts.findIndex(obj => {
+              return JSON.stringify(obj) === JSON.stringify(thing);
+            })
+          );
         });
-       console.log(result);
-       console.log(JSON.stringify( result, null, 2));
+        //  console.log(JSON.stringify( result, null, 2));
 
         this.products = uniqueArray;
-      }
+      } else this.products = this.getProducts;
     },
     /**
      * Изменение заголовка в шапке при смене роута.
@@ -574,7 +589,7 @@ export default {
      */
     clearCart() {
       this.openCartModal = false;
-      this.$store.dispatch('cart/clearCart');
+      this.$store.dispatch("cart/clearCart");
     },
     /**
      * Меняет количество выбранного элемента
@@ -582,13 +597,13 @@ export default {
      * @param {string} sign - знак сложения или вычитания
      */
     changeAmount(item, sign) {
-      if (sign === '-') {
+      if (sign === "-") {
         if (item.count > 1) {
-          item.count--
+          item.count--;
         } else {
           let idx = this.products.findIndex(nod => {
             return nod.id === item.id;
-          })
+          });
           this.products.splice(idx, 1);
 
           if (this.products.length === 0) {
@@ -599,7 +614,7 @@ export default {
         item.count++;
       }
       item.totalPrice = item.price * item.count;
-    },
+    }
     // openURL
   }
 };
@@ -626,6 +641,12 @@ export default {
 
 .cart {
   min-width: 50%;
+  @media screen and (max-width: 959.98px) {
+    min-width: 80%;
+  }
+  @media screen and (max-width: 574.98px) {
+    min-width: 100%;
+  }
 }
 
 .footer--bg-color {
@@ -674,5 +695,4 @@ export default {
     max-width: 100%;
   }
 }
-
 </style>

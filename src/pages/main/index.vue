@@ -61,7 +61,7 @@
     <h3 class="container text-h6 q-mb-md">Мы рекомендуем</h3>
     <section class="recomended q-mb-xl q-py-lg">
       <div class="container">
-        <div class="row justify-md-between justify-center items-stretch">
+        <div class="row justify-sm-between justify-center items-stretch">
           <div class="q-mb-lg q-px-md-md q-px-none col-lg-3 col-md-4" v-for="item in products" :key="item.id">
             <q-card class="card shadow-transition full-height" square>
               <img :src="item.img" />
