@@ -9,13 +9,19 @@ npm install
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
-quasar dev
+npm run dev
 ```
 
 
 ### Build the app for production
 ```bash
-quasar build
+npm run build
+```
+
+
+### If you need you can install Quasar globally. More info [here](https://quasar.dev/quasar-cli/installation).
+```bash
+npm install -g @quasar/cli
 ```
 
 ### Customize the configuration
